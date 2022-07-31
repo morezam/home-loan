@@ -2,6 +2,9 @@ module.exports = {
 	Query: {
 		user: async (parent, { id }, { userModel }, info) => {
 			const user = await userModel.findById(id).exec();
+			if (!user) {
+				throw new Error(`No User Found`);
+			}
 			return user;
 		},
 
@@ -12,6 +15,9 @@ module.exports = {
 
 		loan: async (parent, { id }, { loanModel }, info) => {
 			const loan = await loanModel.findById(id).exec();
+			if (!loan) {
+				throw new Error(`No Loan Found`);
+			}
 			return loan;
 		},
 
