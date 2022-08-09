@@ -1,20 +1,12 @@
 const mongoose = require('mongoose');
 
 const userModel = mongoose.Schema({
-	firstName: {
+	email: {
 		type: String,
 		required: true,
 	},
-	lastName: {
+	password: {
 		type: String,
-		required: true,
-	},
-	nationalCode: {
-		type: Number,
-		required: true,
-	},
-	phoneNumber: {
-		type: Number,
 		required: true,
 	},
 	loans: [
@@ -23,10 +15,12 @@ const userModel = mongoose.Schema({
 			ref: 'loan',
 		},
 	],
-	fatherName: {
-		type: String,
-		required: true,
-	},
+	borrowers: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'borrower',
+		},
+	],
 });
 
 const user = mongoose.model('user', userModel);

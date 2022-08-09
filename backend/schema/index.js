@@ -2,13 +2,10 @@ const { gql } = require('apollo-server');
 
 module.exports = gql`
 	type User {
-		firstName: String!
-		lastName: String!
+		email: String!
 		id: ID!
-		nationalCode: Int!
-		phoneNumber: Int!
 		loans: [Loan]!
-		fatherName: String!
+		borrowers: [Borrower]!
 	}
 
 	type Loan {
@@ -20,36 +17,57 @@ module.exports = gql`
 		description: String
 		users: [User]!
 		numberOfPeople: Int!
+		userId: ID!
+	}
+
+	type Borrower {
+		firstName: String!
+		lastName: String!
+		id: ID!
+		nationalCode: Int!
+		phoneNumber: Int!
+		loans: [Loan]!
+		fatherName: String!
+		userId: ID!
+	}
+
+	type UserWithToken {
+		token: String!
+		user: User!
 	}
 
 	type Query {
 		user(id: ID!): User!
-		allUsers: [User]!
 		loan(id: ID!): Loan!
 		allLoan: [Loan]!
+		borrower(id: ID!): Borrower!
+		allBorrowers: [Borrower]!
+		login(email: String!, password: String!): UserWithToken!
 	}
 
 	type Mutation {
-		createUser(
+		createUser(email: String!, password: String!): UserWithToken!
+
+		createBorrower(
 			firstName: String!
 			lastName: String!
 			nationalCode: Int!
-			loans: [String]
+			loans: [ID]
 			phoneNumber: Int!
 			fatherName: String!
-		): User!
+		): Borrower!
 
-		deleteUser(id: ID!): User
+		deleteBorrower(id: ID!): Borrower
 
-		updateUser(
+		updateBorrower(
 			id: ID!
 			firstName: String
 			lastName: String
 			nationalCode: Int
 			phoneNumber: Int
-			loans: [String]
+			loans: [ID]
 			fatherName: String
-		): User!
+		): Borrower!
 
 		createLoan(
 			name: String!
@@ -58,16 +76,18 @@ module.exports = gql`
 			numberOfInstalments: Int!
 			description: String
 			numberOfPeople: Int!
+			users: [ID]
 		): Loan!
 
 		updateLoan(
 			id: ID!
-			name: String!
-			price: Int!
-			startingDate: String!
-			numberOfInstalments: Int!
+			name: String
+			price: Int
+			startingDate: String
+			numberOfInstalments: Int
 			description: String
-			numberOfPeople: Int!
+			numberOfPeople: Int
+			users: [ID]
 		): Loan!
 
 		deleteLoan(id: ID!): Loan

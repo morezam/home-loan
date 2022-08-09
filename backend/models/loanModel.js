@@ -20,12 +20,16 @@ const loanModel = mongoose.Schema({
 	description: {
 		type: String,
 	},
-	users: [
+	borrowers: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'user',
+			ref: 'borrower',
 		},
 	],
+	userId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'user',
+	},
 	numberOfPeople: {
 		type: Number,
 		required: true,

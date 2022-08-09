@@ -1,19 +1,33 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
 module.exports = {
 	Query: {
-		user: async (parent, { id }, { userModel }, info) => {
-			const user = await userModel.findById(id).exec();
-			if (!user) {
-				throw new Error(`No User Found`);
-			}
+		user: async (parent, { id }, { models: { userModel } }, info) => {
+			const user = await userModel.findById({ id }).exec();
 			return user;
 		},
-
-		allUsers: async (parent, args, { userModel }, info) => {
-			const users = await userModel.find({}).exec();
-			return users;
+		borrower: async (parent, { id }, { models: { borrowerModel } }, info) => {
+			const borrower = await borrowerModel.findById(id).exec();
+			if (!borrower) {
+				throw new Error(`No Borrower Found`);
+			}
+			return borrower;
 		},
 
-		loan: async (parent, { id }, { loanModel }, info) => {
+		allBorrowers: async (
+			parent,
+			args,
+			{ models: { borrowerModel }, authenticatedUser },
+			info
+		) => {
+			const borrowers = await borrowerModel
+				.find({ userId: authenticatedUser.id })
+				.exec();
+			return borrowers;
+		},
+
+		loan: async (parent, { id }, { models: { loanModel } }, info) => {
 			const loan = await loanModel.findById(id).exec();
 			if (!loan) {
 				throw new Error(`No Loan Found`);
@@ -21,51 +35,122 @@ module.exports = {
 			return loan;
 		},
 
-		allLoan: async (parent, args, { loanModel }, info) => {
-			const loans = await loanModel.find({}).exec();
+		allLoan: async (
+			parent,
+			args,
+			{ models: { loanModel }, authenticatedUser },
+			info
+		) => {
+			const loans = await loanModel
+				.find({ userId: authenticatedUser.id })
+				.exec();
 			return loans;
+		},
+
+		login: async (
+			parent,
+			{ email, password },
+			{ models: { userModel } },
+			info
+		) => {
+			const user = await userModel.findOne({ email }).exec();
+			if (!user) {
+				throw new Error('user not found');
+			}
+			const matchPasswords = bcrypt.compareSync(password, user.password);
+
+			if (!matchPasswords) {
+				throw new Error('password is not correct');
+			}
+
+			const token = jwt.sign({ id: user.id }, 'riddlemethis', {
+				expiresIn: 24 * 10 * 50,
+			});
+
+			return {
+				token,
+				user,
+			};
 		},
 	},
 
 	Mutation: {
 		createUser: async (
 			parent,
-			{ firstName, lastName, nationalCode, phoneNumber, loans, fatherName },
-			{ userModel },
+			{ email, password },
+			{ models: { userModel } },
 			info
 		) => {
-			const newUser = await userModel.create({
-				firstName,
-				lastName,
-				nationalCode,
-				phoneNumber,
-				loans,
-				fatherName,
+			const hashedPassword = bcrypt.hashSync(password, 12);
+			const user = await userModel.create({ email, password: hashedPassword });
+			const token = jwt.sign({ id: user.id }, 'riddlemethis', {
+				expiresIn: '24h',
 			});
-			return newUser;
+
+			return {
+				token,
+				user,
+			};
+		},
+		createBorrower: async (
+			parent,
+			{ ...args },
+			{ models: { borrowerModel }, authenticatedUser },
+			info
+		) => {
+			const newBorrower = await borrowerModel.create({
+				...args,
+				userId: authenticatedUser.id,
+			});
+			return newBorrower;
 		},
 
-		updateUser: async (parent, { id, ...args }, { userModel }, info) => {
-			const updatedUser = await userModel.findByIdAndUpdate(id, { ...args });
-			return updatedUser;
+		updateBorrower: async (
+			parent,
+			{ id, ...args },
+			{ models: { borrowerModel } },
+			info
+		) => {
+			const updatedBorrower = await borrowerModel.findByIdAndUpdate(id, {
+				...args,
+			});
+			return updatedBorrower;
 		},
 
-		deleteUser: async (parent, { id }, { userModel }, info) => {
-			const deletedUser = await userModel.findByIdAndDelete(id);
-			return deletedUser;
+		deleteBorrower: async (
+			parent,
+			{ id },
+			{ models: { borrowerModel } },
+			info
+		) => {
+			const deletedBorrower = await borrowerModel.findByIdAndDelete(id);
+			return deletedBorrower;
 		},
 
-		createLoan: async (parent, { ...args }, { loanModel }, info) => {
-			const newLoan = await loanModel.create({ ...args });
+		createLoan: async (
+			parent,
+			{ ...args },
+			{ models: { loanModel }, authenticatedUser },
+			info
+		) => {
+			const newLoan = await loanModel.create({
+				...args,
+				userId: authenticatedUser.id,
+			});
 			return newLoan;
 		},
 
-		updateUser: async (parent, { id, ...args }, { loanModel }, info) => {
+		updateLoan: async (
+			parent,
+			{ id, ...args },
+			{ models: { loanModel } },
+			info
+		) => {
 			const updatedLoan = await loanModel.findByIdAndUpdate(id, { ...args });
 			return updatedLoan;
 		},
 
-		deleteLoan: async (parent, { id }, { loanModel }, info) => {
+		deleteLoan: async (parent, { id }, { models: { loanModel } }, info) => {
 			const deletedLoan = await loanModel.findByIdAndDelete(id);
 			return deletedLoan;
 		},
