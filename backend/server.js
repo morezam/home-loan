@@ -11,6 +11,7 @@ const resolvers = require('./resolvers');
 const borrowerModel = require('./models/borrowerModel');
 const userModel = require('./models/userModel');
 const loanModel = require('./models/loanModel');
+const installmentModel = require('./models/installmentModel');
 
 const getUser = async req => {
 	const token = req.headers['token'];
@@ -18,7 +19,7 @@ const getUser = async req => {
 		try {
 			return await jwt.verify(token, 'riddlemethis');
 		} catch (e) {
-			throw new Error('Your session expired. Sign in again.');
+			throw new Error(`Your session expired. Sign in again. ${e}`);
 		}
 	}
 };
@@ -37,6 +38,7 @@ const server = new ApolloServer({
 					userModel,
 					loanModel,
 					borrowerModel,
+					installmentModel,
 				},
 			};
 		}

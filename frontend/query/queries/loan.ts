@@ -8,10 +8,6 @@ export const ALL_LOANS = gql`
 			price
 			startingDate
 			numberOfInstalments
-			description
-			users {
-				id
-			}
 			numberOfPeople
 		}
 	}
@@ -20,12 +16,13 @@ export const ALL_LOANS = gql`
 export const LOAN = gql`
 	query ($id: ID!) {
 		loan(id: $id) {
+			id
 			name
 			price
 			startingDate
 			numberOfInstalments
 			description
-			users {
+			borrowers {
 				id
 			}
 			numberOfPeople

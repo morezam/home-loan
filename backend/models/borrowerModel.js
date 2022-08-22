@@ -20,7 +20,7 @@ const borrowerModel = mongoose.Schema({
 	loans: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'loan',
+			ref: 'installment',
 		},
 	],
 	fatherName: {

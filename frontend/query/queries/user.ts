@@ -13,14 +13,3 @@ export const USER = gql`
 		}
 	}
 `;
-
-export const LOGIN = gql`
-	query ($email: String!, $password: String!) {
-		login(email: $email, password: $password) {
-			token
-			user {
-				id
-			}
-		}
-	}
-`;

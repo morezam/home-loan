@@ -3,11 +3,11 @@ import { gql } from 'graphql-request';
 export const CREATE_LOAN = gql`
 	mutation (
 		$name: String!
-		$price: Int!
+		$price: String!
 		$startingDate: String!
 		$numberOfInstalments: Int!
 		$description: String
-		$users: [ID]
+		$borrowers: [ID]
 		$numberOfPeople: Int!
 	) {
 		createLoan(
@@ -17,18 +17,9 @@ export const CREATE_LOAN = gql`
 			numberOfInstalments: $numberOfInstalments
 			description: $description
 			numberOfPeople: $numberOfPeople
-			users: $users
+			borrowers: $borrowers
 		) {
 			id
-			name
-			price
-			startingDate
-			numberOfInstalments
-			description
-			users {
-				id
-			}
-			numberOfPeople
 		}
 	}
 `;
@@ -37,11 +28,10 @@ export const UPDATE_LOAN = gql`
 	mutation (
 		$id: ID!
 		$name: String
-		$price: Int
+		$price: String
 		$startingDate: String
 		$numberOfInstalments: Int
 		$description: String
-		$users: [ID]
 		$numberOfPeople: Int
 	) {
 		updateLoan(
@@ -52,18 +42,8 @@ export const UPDATE_LOAN = gql`
 			numberOfInstalments: $numberOfInstalments
 			description: $description
 			numberOfPeople: $numberOfPeople
-			users: $users
 		) {
 			id
-			name
-			price
-			startingDate
-			numberOfInstalments
-			description
-			users {
-				id
-			}
-			numberOfPeople
 		}
 	}
 `;
@@ -72,7 +52,6 @@ export const DELETE_LOAN = gql`
 	mutation ($id: ID!) {
 		deleteLoan(id: $id) {
 			id
-			name
 		}
 	}
 `;

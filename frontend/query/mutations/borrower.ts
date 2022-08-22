@@ -4,10 +4,9 @@ export const CREATE_BORROWER = gql`
 	mutation (
 		$firstName: String!
 		$lastName: String!
-		$nationalCode: Int!
-		$phoneNumber: Int!
+		$nationalCode: String!
+		$phoneNumber: String!
 		$fatherName: String!
-		$loans: [ID]
 	) {
 		createBorrower(
 			firstName: $firstName
@@ -15,16 +14,12 @@ export const CREATE_BORROWER = gql`
 			nationalCode: $nationalCode
 			phoneNumber: $phoneNumber
 			fatherName: $fatherName
-			loans: $loans
 		) {
 			firstName
 			id
 			lastName
 			nationalCode
 			phoneNumber
-			loans {
-				id
-			}
 			fatherName
 		}
 	}
@@ -35,10 +30,9 @@ export const UPDATE_BORROWER = gql`
 		$id: ID!
 		$firstName: String
 		$lastName: String
-		$nationalCode: Int
-		$phoneNumber: Int
+		$nationalCode: String
+		$phoneNumber: String
 		$fatherName: String
-		$loans: [ID]
 	) {
 		updateBorrower(
 			id: $id
@@ -47,26 +41,15 @@ export const UPDATE_BORROWER = gql`
 			nationalCode: $nationalCode
 			phoneNumber: $phoneNumber
 			fatherName: $fatherName
-			loans: $loans
 		) {
-			firstName
 			id
-			lastName
-			nationalCode
-			phoneNumber
-			loans {
-				id
-			}
-			fatherName
 		}
 	}
 `;
 
 export const DELETE_BORROWER = gql`
-	mutation ($id: ID!) {
-		deleteBorrower(id: $id) {
-			firstName
-			lastName
+	mutation ($borrowerId: ID!) {
+		deleteBorrower(borrowerId: $borrowerId) {
 			id
 		}
 	}

@@ -47,8 +47,3 @@ export const AuthContextProvider = ({
 export const useAuthContext = () => {
 	return useContext(AuthContext);
 };
-
-// Maximum update depth exceeded.
-// This can happen when a component calls setState inside useEffect,
-// but useEffect either doesn't have a dependency array,
-// or one of the dependencies changes on every render.

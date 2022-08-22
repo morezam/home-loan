@@ -1,53 +1,51 @@
-import { useMutation } from '@tanstack/react-query';
-import type { NextPage } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import React, { useState } from 'react';
-
-const WelcomeBack: NextPage = () => {
-	const mutation = useMutation(newUser => {
-		return fetch({
-			method: 'POST',
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				nationalCode,
-				phoneNumber,
-				fatherName,
-			}),
-		});
-	});
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [nationalCode, setNationalCode] = useState('');
-	const [phoneNumber, setPhoneNumber] = useState('');
-	const [fatherName, setFatherName] = useState('');
-
-	const onButtonSubmit = () => {};
+const WelcomeBack = () => {
 	return (
-		<div>
+		<div
+			className="relative h-screen bg-background"
+			style={{
+				borderBottomLeftRadius: '50% 10%',
+				borderBottomRightRadius: '50% 10%',
+			}}>
 			<Head>
 				<title>صندوق قرض الحسنه خانگی ونداده</title>
 			</Head>
-			<form>
-				<input value={firstName} onChange={e => setFirstName(e.target.value)} />
-				<input value={lastName} onChange={e => setLastName(e.target.value)} />
-				<input
-					value={nationalCode}
-					onChange={e => setNationalCode(e.target.value)}
-				/>
-				<input
-					value={phoneNumber}
-					onChange={e => setPhoneNumber(e.target.value)}
-				/>
-				<input
-					value={fatherName}
-					onChange={e => setFatherName(e.target.value)}
-				/>
-				<button onSubmit={onButtonSubmit}>submit</button>
-			</form>
+			<div className="relative flex flex-col items-center md:flex-row md:justify-between">
+				<div className="flex flex-col justify-center items-center mt-9 text-center sm:w-4/5 md:w-2/5 md:mr-20 ">
+					<h1 className="text-3xl font-bold leading-tight md:text-4xl lg:text-6xl">
+						وام خانگی خود را به راحت ترین شکل ممکن مدیریت کنید.
+					</h1>
+					<p className="my-7 text-lg text-slate-500">
+						{' '}
+						با انتخاب این سایت می توانید به راحتی اعضای صندوق را اضافه کنید و با
+						انتخاب نوع وام برای آنها قسط بسازید.
+					</p>
+					<div className="flex flex-col justify-between h-32 items-center md:w-64 md:h-0 md:flex-row lg:w-72">
+						<Link href="/signup">
+							<a className="bg-primary py-4 px-6 rounded-2xl shadow transition duration-300 hover:bg-secondary hover:text-black  active:translate-y-1 active:shadow-lg">
+								عضو شوید
+							</a>
+						</Link>
+						<Link href="/login">
+							<a className="bg-secondary py-4 px-6 rounded-2xl shadow active:translate-y-1 active:shadow-lg">
+								حساب دارید؟
+							</a>
+						</Link>
+					</div>
+				</div>
+				<div>
+					<Image
+						src={'/main-svg.svg'}
+						alt="Main Background image"
+						width={700}
+						height={700}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 };
-
 export default WelcomeBack;

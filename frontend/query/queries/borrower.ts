@@ -5,6 +5,8 @@ export const ALL_BORROWERS = gql`
 		allBorrowers {
 			firstName
 			lastName
+			nationalCode
+			phoneNumber
 			id
 		}
 	}
@@ -18,9 +20,6 @@ export const BORROWER = gql`
 			id
 			nationalCode
 			phoneNumber
-			loans {
-				id
-			}
 			fatherName
 		}
 	}
