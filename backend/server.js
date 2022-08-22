@@ -45,8 +45,8 @@ const server = new ApolloServer({
 	},
 });
 
-server.listen().then(() => {
-	mongoose.connect(`mongodb://127.0.0.1:27017/ballot`, {
+server.listen({ port: process.env.PORT || 4000 }).then(() => {
+	mongoose.connect(`${process.env.MONGODB_CONNECTION_URL}`, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	});
