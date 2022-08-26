@@ -1,5 +1,3 @@
-import { Reducer, ReducerStateWithoutAction } from 'react';
-
 export enum AuthActionKind {
 	LOGIN = 'LOGIN',
 	LOGOUT = 'LOGOUT',

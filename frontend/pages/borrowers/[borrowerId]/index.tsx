@@ -22,7 +22,6 @@ import ErrorComponent from '../../../components/ErrorComponent';
 import { GraphQlError } from '../../../types/graphQlError';
 
 const Borrower = ({ borrowerId }: { borrowerId: string }) => {
-	// TODO : error handling
 	const [open, setOpen] = useState(false);
 	const { data, isSuccess, isLoading, isError, error } = useQuery<
 		Borrowers,

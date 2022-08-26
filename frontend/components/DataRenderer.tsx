@@ -10,7 +10,7 @@ import Modal from './modal';
 interface DataRendererProps<T> {
 	children?: React.ReactNode;
 	data?: T;
-	onFormSubmit: (data: T) => void;
+	onFormSubmit: (data: any) => void;
 	create?: boolean;
 	fieldData: FieldData[];
 	path: string;

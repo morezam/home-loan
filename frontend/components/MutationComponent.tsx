@@ -2,7 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { client } from '../lib/graphQlRequestDefault';
 import { queryClient } from '../lib/queryclient';
-import { DELETE_INSTALLMENT } from '../query/mutations/installment';
 import Button from './Button';
 
 interface MutationComponentProps {

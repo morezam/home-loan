@@ -1,4 +1,5 @@
-const p2e = s => s.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+const p2e = (s: any) =>
+	s.replace(/[۰-۹]/g, (d: any) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 export const persianDateCreator = (date: string | Date) => {
 	const enDate = new Date(date);
 	const perDate = Intl.DateTimeFormat('fa-IR', {

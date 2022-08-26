@@ -43,13 +43,10 @@ const server = new ApolloServer({
 });
 
 const startServer = server.start().then(() => {
-	mongoose.connect(`${process.env.MONGODB_CONNECTION_URL}`, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	});
+	mongoose.connect(`${process.env.MONGODB_CONNECTION_URL}`);
 });
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
 	await startServer;
 	await server.createHandler({ path: '/api/ballot' })(req, res);
 }

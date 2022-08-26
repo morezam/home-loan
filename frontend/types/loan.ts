@@ -1,4 +1,3 @@
-// TODO : Add a borrowers type
 export interface Loan {
 	id: string;
 	name: string;

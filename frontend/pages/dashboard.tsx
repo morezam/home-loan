@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import Sidebar from '../components/sidebar';
 import { useAuthContext } from '../context/authContext';
 
 const Dashboard = () => {

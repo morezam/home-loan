@@ -17,5 +17,3 @@ export const generateInstallmentArray = async (data: installmentArrayArgs) => {
 	}
 	return returned;
 };
-
-module.exports = generateInstallmentArray;

@@ -4,7 +4,6 @@ import { useAuthContext } from '../../context/authContext';
 import { AuthActionKind } from '../../context/authReducer';
 import { sideArray } from './sidebarItems';
 import { MdOutlineLogout } from 'react-icons/md';
-import { AiFillCloseCircle } from 'react-icons/ai';
 import { Dispatch, SetStateAction } from 'react';
 
 interface SideBarProps {
