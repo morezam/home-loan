@@ -20,6 +20,8 @@ import Layout from '../../../components/Layout';
 import Spinner from '../../../components/spinner/Spinner';
 import ErrorComponent from '../../../components/ErrorComponent';
 import { GraphQlError } from '../../../types/graphQlError';
+import { AllInstallment } from '../../../types/installments';
+import { INSTALLMENT } from '../../../query/queries/installment';
 
 const Borrower = ({ borrowerId }: { borrowerId: string }) => {
 	const [open, setOpen] = useState(false);
@@ -36,6 +38,17 @@ const Borrower = ({ borrowerId }: { borrowerId: string }) => {
 			refetchOnWindowFocus: false,
 		}
 	);
+
+	const {
+		data: installmentData,
+		isLoading: installmentLoading,
+		isError: installmentIsError,
+		error: installmentError,
+	} = useQuery<AllInstallment, GraphQlError>(['installment'], () => {
+		return client.request(INSTALLMENT, {
+			borrower: borrowerId,
+		});
+	});
 
 	const updateBorrower = useMutation(
 		(updatedBorrower: Borrower) => {
@@ -104,7 +117,13 @@ const Borrower = ({ borrowerId }: { borrowerId: string }) => {
 								</Button>
 							</div>
 						</Modal>
-						<ShowInstallments borrowerId={borrowerId} />
+						{installmentLoading ? (
+							<Spinner />
+						) : installmentIsError ? (
+							<ErrorComponent errorObject={installmentError} />
+						) : (
+							<ShowInstallments installmentData={installmentData} />
+						)}
 					</div>
 				)}
 			</div>

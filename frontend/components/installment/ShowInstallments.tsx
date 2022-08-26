@@ -1,37 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
-import { client } from '../../lib/graphQlRequestDefault';
 import { PAY_INSTALLMENT, WIN_DATE } from '../../query/mutations/installment';
-import { INSTALLMENT } from '../../query/queries/installment';
-import { GraphQlError } from '../../types/graphQlError';
 import { AllInstallment } from '../../types/installments';
-import ErrorComponent from '../ErrorComponent';
 import MutationComponent from '../MutationComponent';
-import Spinner from '../spinner/Spinner';
 import { Table, TableData } from '../Table';
 
-const ShowInstallments = ({ borrowerId }: { borrowerId: string }) => {
-	const { data, isSuccess, isLoading, isError, error } = useQuery<
-		AllInstallment,
-		GraphQlError
-	>(['installment'], () => {
-		return client.request(INSTALLMENT, {
-			borrower: borrowerId,
-		});
-	});
-
-	if (isError) {
-		return <ErrorComponent errorObject={error} />;
-	}
-
-	if (isLoading) {
-		return <Spinner />;
-	}
+const ShowInstallments = ({
+	installmentData,
+}: {
+	installmentData: AllInstallment;
+}) => {
 	return (
 		<div>
-			{isSuccess && data.installment.length !== 0
-				? data.installment.map((loanInstallment, index) => {
+			{installmentData.installment.length !== 0
+				? installmentData.installment.map((loanInstallment, index) => {
 						return (
-							<div key={data.installment[index].loan}>
+							<div key={installmentData.installment[index].loan}>
 								<p>{loanInstallment.name}</p>
 								{!loanInstallment.wonAt ? (
 									<MutationComponent
